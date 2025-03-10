@@ -1,4 +1,4 @@
-# Atliq-Hardware-s-SQL-Challenge
+# Atliq-Hardware-SQL-Challenge
 
 # Overview
 This repository contains solutions for the Atliq Hardwares SQL Challenge as part of my bootcamp program. The challenge is designed to test both technical and analytical skills in SQL by solving real-world business problems in the Consumer Goods domain.
