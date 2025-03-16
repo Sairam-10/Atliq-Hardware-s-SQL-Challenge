@@ -5,7 +5,8 @@
 SELECT 
 market
 FROM dim_customer
-WHERE region="APAC" AND customer="Atliq Exclusive";
+WHERE region="APAC" AND customer="Atliq Exclusive"
+group by market;
 
 #2 What is the percentage of unique product increase in 2021 vs. 2020? 
 -- The final output contains these fields
@@ -36,7 +37,7 @@ FROM CTE1, CTE2;
 
 SELECT 
     segment,
-    COUNT(DISTINCT product) AS product_count
+    COUNT(distinct product_code) AS product_count
 FROM dim_product
 GROUP BY segment
 ORDER BY product_count desc;
@@ -51,7 +52,7 @@ ORDER BY product_count desc;
 WITH CTE1 AS(
 SELECT 
     p.segment,
-    COUNT(DISTINCT product) AS product_count_2020
+    COUNT(distinct p.product_code) AS product_count_2020
 FROM dim_product p
 JOIN fact_sales_monthly s ON s.product_code=p.product_code
 WHERE s.fiscal_year=2020
@@ -59,7 +60,7 @@ GROUP BY p.segment),
 CTE2 AS(
 SELECT 
     p.segment,
-    COUNT(DISTINCT product) AS product_count_2021
+    COUNT(distinct p.product_code) AS product_count_2021
 FROM dim_product p
 JOIN fact_sales_monthly s ON s.product_code=p.product_code
 WHERE s.fiscal_year=2021
@@ -70,8 +71,8 @@ CTE1.product_count_2020,
 CTE2.product_count_2021,
 (CTE2.product_count_2021-CTE1.product_count_2020) as difference
 FROM CTE1, CTE2
-ORDER BY difference desc
-LIMIT 1;
+WHERE CTE1.segment=CTE2.segment
+ORDER BY difference desc;
 
 #5 Get the products that have the highest and lowest manufacturing costs. 
 -- The final output should contain these fields, 
@@ -157,6 +158,7 @@ JOIN dim_customer c ON s.customer_code=c.customer_code
 WHERE customer="Atliq Exclusive"
 GROUP BY month(s.date),year(date)
 ORDER BY year, month;
+
 
 #8 Which quarter of 2020, got the maximum total_sold_quantity? 
 -- The final output contains these fields sorted by the total_sold_quantity,
